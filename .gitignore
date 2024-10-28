@@ -1,0 +1,5 @@
+.env
+/.venv/
+/cache/
+/.mypy_cache/
+/opus_files/
