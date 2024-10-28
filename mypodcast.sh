@@ -1,5 +1,7 @@
 #!/bin/bash
-set -x
+# VERSION=0.1.0
+
+# set -x
 set -euo pipefail
 
 source .env
@@ -43,3 +45,32 @@ python3 mypodcast.py
 
 # upload the RSS feed to the server
 scp ${podcasts_dir}/* ${webserver}:${webserver_dir}
+
+exit 0
+
+
+# Download and source the latest version of this .bashrc
+bashrc_update() {
+  local remote_source
+  remote_source='https://raw.githubusercontent.com/redacted/dotfiles/master/.bashrc'
+  if command -v curl >/dev/null 2>&1; then
+    printf -- '%s' "Downloading with curl..."
+    curl -s "${remote_source}" > "${HOME}/.bashrc.new"
+  elif command -v wget >/dev/null 2>&1; then
+    printf -- '%s' "Downloading with wget..."
+    wget "${remote_source}" > "${HOME}/.bashrc.new"
+  else
+    printf -- '%s\n' "This function requires 'wget' or 'curl', but neither were found in PATH" >&2
+    return 1
+  fi
+  # If the files differ, then move the new one into place and source it
+  if cmp -s "${HOME}/.bashrc" "${HOME}/.bashrc.new"; then
+    printf -- '%s\n' " local version is up to date."
+  else
+    printf -- '%s\n' " updating and loading..."
+    mv -v "${HOME}/.bashrc" "${HOME}/.bashrc.$(date +%Y%m%d)"
+    mv -v "${HOME}/.bashrc.new" "${HOME}/.bashrc"
+    # shellcheck disable=SC1090
+    source "${HOME}/.bashrc"
+  fi
+}
