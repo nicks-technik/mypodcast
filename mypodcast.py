@@ -6,7 +6,7 @@ import datetime
 import pathlib
 import xml.etree.ElementTree as ET
 
-# def generate_podcast_rss(podcast_title, podcast_description, podcast_link, output_file, opus_directory):
+# def generate_podcast_rss(podcast_title, podcast_description, podcast_link, output_file, podcasts_directory):
 #     """
 #     Generates a podcast RSS feed with Opus files from a specified directory.
 
@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 #         podcast_description: The description of the podcast.
 #         podcast_link: The link to the podcast website.
 #         output_file: The filename for the generated RSS feed.
-#         opus_directory: The directory containing the Opus files.
+#         podcasts_directory: The directory containing the Opus files.
 #     """
 
 #     feed = feedparser.FeedParserDict()
@@ -26,7 +26,7 @@ import xml.etree.ElementTree as ET
 #     feed['feed']['language'] = 'de-DE'  # Adjust the language as needed
 #     feed['entries'] = []
 
-#     for file in pathlib.Path(opus_directory).glob('*.opus'):
+#     for file in pathlib.Path(podcasts_directory).glob('*.opus'):
 #         file_path = file.absolute()
 #         file_size = file.stat().st_size
 #         file_url = f"{podcast_link}/{file.name}"  # Replace with your actual server URL
@@ -45,7 +45,7 @@ import xml.etree.ElementTree as ET
 
 
 def generate_podcast_rss(
-    podcast_title, podcast_description, podcast_link, output_file, opus_directory
+    podcast_title, podcast_description, podcast_link, output_file, podcasts_directory
 ):
     # ... (rest of the function remains the same)
 
@@ -57,7 +57,7 @@ def generate_podcast_rss(
     ET.SubElement(channel, "link").text = podcast_link
     ET.SubElement(channel, "language").text = "de-DE"
 
-    for file in pathlib.Path(opus_directory).glob("*.opus"):
+    for file in pathlib.Path(podcasts_directory).glob("*.opus"):
         file_path = file.absolute()
         file_size = file.stat().st_size
         file_url = f"{podcast_link}/{file.name}"  # Replace with your actual server URL
@@ -85,9 +85,9 @@ dotenv.load_dotenv()
 podcast_title = os.getenv("PODCAST_TITLE")
 podcast_description = os.getenv("PODCAST_DESCRIPTION")
 podcast_link = os.getenv("PODCAST_LINK")
-opus_directory = os.getenv("OPUS_DIR")
-output_file = pathlib.Path(opus_directory) / "podcast.xml"
+podcasts_directory = os.getenv("PODCASTS_DIR")
+output_file = pathlib.Path(podcasts_directory) / "podcast.xml"
 
 generate_podcast_rss(
-    podcast_title, podcast_description, podcast_link, output_file, opus_directory
+    podcast_title, podcast_description, podcast_link, output_file, podcasts_directory
 )
